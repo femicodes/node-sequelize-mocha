@@ -7,8 +7,12 @@
     "start": "node build/index",
     "clean": "rimraf build",
     "migrate": "sequelize db:migrate",
+    "generate-lcov": "nyc report --reporter=text-lcov > lcov.info",
+    "coveralls-coverage": "coveralls < lcov.info",
+    "codeclimate-coverage": "codeclimate-test-reporter < lcov.info",
     "build": "yarn run clean && babel api -d build",
     "dev": "DEBUG=express nodemon --exec babel-node api/index",
+    "coverage": "nyc yarn test && yarn run generate-lcov && yarn run coveralls-coverage && yarn run codeclimate-coverage",
     "test": "NODE_ENV=test sequelize db:migrate:undo:all  && NODE_ENV=test sequelize db:migrate  && NODE_ENV=test nyc mocha ./api/test/* --timeout 20000 -r @babel/register -r @babel/polyfill --exit"
   },
   "devDependencies": {
